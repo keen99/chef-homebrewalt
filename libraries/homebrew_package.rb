@@ -65,7 +65,7 @@ class Chef
         end
 
         def current_installed_version
-          pkg = get_version_from_formula
+          pkg = get_version_from_command("brew --version")
           versions = pkg.to_hash['installed'].map {|v| v['version']}
           versions.join(" ") unless versions.empty?
         end
