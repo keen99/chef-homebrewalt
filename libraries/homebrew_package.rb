@@ -65,14 +65,11 @@ class Chef
         end
 
         def current_installed_version
-          pkg = get_version_from_command("brew --version")
-          versions = pkg.to_hash['installed'].map {|v| v['version']}
-          versions.join(" ") unless versions.empty?
+-          get_version_from_command("brew list --versions | awk '/^#{@new_resource.package_name} / { print $2 }'")
         end
 
         def candidate_version
-          pkg = get_version_from_formula
-          pkg.stable.version.to_s || pkg.version.to_s
+-          get_version_from_command("brew info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name} / { print $2 }'")
         end
 
         def get_version_from_command(command)
